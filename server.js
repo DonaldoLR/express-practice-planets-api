@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use('/', (req, res) => {
+app.use('/api/planets', (req, res) => {
 	res.status(200).json({ message: 'Connected' });
 });
 
