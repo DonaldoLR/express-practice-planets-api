@@ -17,7 +17,15 @@ const createPlanet = async (req, res) => {
 	res.status(200).json({ message: 'Planet created', newPlanet });
 };
 // GET ALL
+const getPlanets = async (req, res) => {
+	const planets = await Planet.find({}).sort({ createdAt: -1 });
 
+	if (!planets) {
+		return res.status(500).json({ error: 'Unable to get planets' });
+	}
+
+	res.status(200).json(planets);
+};
 // GET SINGLE
 
 // UPDATE
@@ -26,4 +34,5 @@ const createPlanet = async (req, res) => {
 
 module.exports = {
 	createPlanet,
+	getPlanets,
 };
