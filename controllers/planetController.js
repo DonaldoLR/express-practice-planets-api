@@ -56,13 +56,29 @@ const updatePlanet = async (req, res) => {
 		return res.status(500).json({ error: 'Unable to update planet' });
 	}
 
-	res.status(200).json(updatedPlanet);
+	res.status(200).json({ message: 'Planet updated', updatedPlanet });
 };
 // DELETE
+const deletePlanet = async (req, res) => {
+	const { id } = req.params;
+
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'Planet ID is not valid' });
+	}
+
+	const deletedPlanet = await Planet.findByIdAndDelete(id);
+
+	if (!deletedPlanet) {
+		return res.status(500).json({ error: 'Unable to delete planet' });
+	}
+
+	res.status(200).json({ message: 'Planet deleted', deletedPlanet });
+};
 
 module.exports = {
 	createPlanet,
 	getPlanets,
 	getPlanet,
 	updatePlanet,
+	deletePlanet,
 };
