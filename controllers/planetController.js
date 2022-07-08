@@ -27,12 +27,42 @@ const getPlanets = async (req, res) => {
 	res.status(200).json(planets);
 };
 // GET SINGLE
+const getPlanet = async (req, res) => {
+	const { id } = req.params;
 
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'Planet ID is not valid' });
+	}
+
+	const singlePlanet = await Planet.findById(id);
+
+	if (!singlePlanet) {
+		return res.status(500).json({ error: 'Unable to find Planet' });
+	}
+
+	res.status(200).json(singlePlanet);
+};
 // UPDATE
+const updatePlanet = async (req, res) => {
+	const { id } = req.params;
 
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'Planet ID is not valid' });
+	}
+
+	const updatedPlanet = await Planet.findByIdAndUpdate(id, { ...req.body });
+
+	if (!updatedPlanet) {
+		return res.status(500).json({ error: 'Unable to update planet' });
+	}
+
+	res.status(200).json(updatedPlanet);
+};
 // DELETE
 
 module.exports = {
 	createPlanet,
 	getPlanets,
+	getPlanet,
+	updatePlanet,
 };
